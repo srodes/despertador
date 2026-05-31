@@ -58,7 +58,7 @@ El diseño del software se ha desacoplado aplicando el **Principio de Inversión
 ```mermaid
 classDiagram
     class AlarmManager {
-        - List<Alarm> alarms
+        - List~Alarm~ alarms
         - boolean vacationModeActive
         + addAlarm(Alarm alarm) void
         + setVacationMode(boolean active) void
