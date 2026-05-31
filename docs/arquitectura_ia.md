@@ -17,3 +17,4 @@ Durante el ciclo de desarrollo incremental se ha utilizado IA generativa como as
 ### Validación y Corrección Crítica
 * **Ventajas encontradas:** Agilidad en la maquetación de estructuras repetitivas en Java y generación rápida de plantillas Markdown para la documentación técnica.
 * **Limitaciones y errores corregidos:** En las primeras propuestas, la IA tendía a diseñar la lógica del reto matemático directamente dentro de la clase `Alarm`. Se intervino manualmente para refactorizar el código, abstrayendo la lógica en una interfaz independiente para respetar el principio de Responsabilidad Única (SRP) de SOLID. Todas las soluciones fueron probadas y ejecutadas mediante el simulador `Main.java` para certificar su robustez.
+Considero que me ha ayudado mucho, pero es verdad que he tenido que tratar de guiarle en algunas ocasiones para que haga lo que le pido. Eso es algo que se debería corregir.
