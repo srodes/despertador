@@ -1,39 +1,35 @@
 package model;
 
-import java.util.Scanner;
+import controller.AlarmManager;
 import model.Alarm;
-import model.BasicOperationChallenge;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("=== SIMULADOR DE DESPERTADOR INTELIGENTE ===");
+        System.out.println("=== PRUEBA DEL MODO VACACIONES ===\n");
 
-        // Creamos una alarma a las 07:00 con el reto matemático incorporado
-        Alarm alarmaConReto = new Alarm(7, 0, "Despertar Obligatorio", new BasicOperationChallenge());
+        AlarmManager manager = new AlarmManager();
 
-        System.out.println("\n[RIING] Está sonando la alarma: " + alarmaConReto.getLabel());
+        // 1. Creamos las alarmas del día a día
+        Alarm alarmaTrabajo = new Alarm(7, 0, "Ir a trabajar");
+        Alarm alarmaGimnasio = new Alarm(19, 30, "Gimnasio");
 
-        // Comprobamos si tiene un reto activo
-        if (alarmaConReto.hasChallenge()) {
-            boolean resuelto = false;
-            // Generamos la pregunta matemática
-            String pregunta = alarmaConReto.getChallenge().generateChallenge();
+        manager.addAlarm(alarmaTrabajo);
+        manager.addAlarm(alarmaGimnasio);
 
-            while (!resuelto) {
-                System.out.println("\n[RETO MATEMÁTICO ACTIVO] Para apagar la alarma debes resolver:");
-                System.out.print(pregunta + " -> Tu respuesta: ");
-                String input = scanner.nextLine();
+        // 2. Comprobamos cuántas alarmas van a sonar normalmente
+        System.out.println("\nAlarmas listas para sonar hoy: " + manager.getActiveAlarms().size());
 
-                if (alarmaConReto.getChallenge().verifyAnswer(input)) {
-                    System.out.println("\n ¡Respuesta Correcta! Alarma desactivada con éxito.");
-                    resuelto = true;
-                } else {
-                    System.out.println("Respuesta incorrecta. La alarma sigue sonando...");
-                }
-            }
+        // 3. ¡Llegan las vacaciones! Activamos el modo global
+        manager.setVacationMode(true);
+
+        // 4. Volvemos a comprobar. Debería dar 0 porque estamos de vacaciones
+        System.out.println("Alarmas listas para sonar hoy: " + manager.getActiveAlarms().size());
+        if (manager.getActiveAlarms().isEmpty()) {
+            System.out.println("🌴 Disfruta de tus vacaciones, no sonará ningún despertador.");
         }
-        
-        scanner.close();
+
+        // 5. Se acaban las vacaciones, volvemos a la rutina
+        manager.setVacationMode(false);
+        System.out.println("Alarmas listas para sonar hoy: " + manager.getActiveAlarms().size());
     }
 }
