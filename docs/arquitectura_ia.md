@@ -4,7 +4,7 @@
 Para el desarrollo de este despertador inteligente se han tomado las siguientes decisiones de arquitectura bajo la filosofía de código limpio:
 
 * **Encapsulación estricta:** Todos los atributos de las entidades (`Alarm`, `SoundProfile`) se han definido como privados (`private`) para proteger la coherencia de los datos, exponiendo únicamente métodos de acceso (`getters`) y lógica de negocio controlada (como `snooze()` o `trigger()`).
-* **Principio de Inversión de Dependencias (SOLID - DIP):** La clase `Alarm` no está acoplada a un tipo de reto matemático fijo. En su lugar, depende de la abstracción `MathChallenge`. Esto soluciona la necesidad de拡張abilidad (escalabilidad): si en el futuro se desean añadir retos de ecuaciones o captchas de texto, basta con implementar la interfaz sin modificar una sola línea del código del núcleo.
+* **Principio de Inversión de Dependencias (SOLID - DIP):** La clase `Alarm` no está acoplada a un tipo de reto matemático fijo. En su lugar, depende de la abstracción `MathChallenge`.
 * **Desacoplamiento de la Interfaz:** Siguiendo las restricciones de la práctica, toda la lógica de negocio se ejecuta de forma independiente a la capa de presentación, lo que facilitaría integrar una interfaz gráfica (GUI) en el futuro sin alterar las reglas del gestor (`AlarmManager`).
 
 ##  2. Uso Responsable de la Inteligencia Artificial
