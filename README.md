@@ -83,7 +83,6 @@ classDiagram
         + play() void
     }
 
-    <<interface>> MathChallenge
     class MathChallenge {
         + generateChallenge() String
         + verifyAnswer(String ans) boolean
