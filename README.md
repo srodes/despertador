@@ -47,3 +47,55 @@ despertador/
 ├── tests/
 │   └── .gitkeep                       # Carpeta reservada para pruebas unitarias
 └── README.md                          # Documentación principal del proyecto
+
+---
+
+## Diseño de Software y Diagramas UML
+
+### 1. Diagrama de Clases (Mermaid)
+El diseño del software se ha desacoplado aplicando el **Principio de Inversión de Dependencias (DIP)**. La clase `Alarm` no depende de una operación matemática concreta, sino de la interfaz `MathChallenge`, lo que permite añadir nuevos tipos de retos en el futuro sin modificar el código existente (Principio Open/Closed).
+
+```mermaid
+classDiagram
+    class AlarmManager {
+        - List<Alarm> alarms
+        - boolean vacationModeActive
+        + addAlarm(Alarm alarm) void
+        + setVacationMode(boolean active) void
+        + getActiveAlarms() List~Alarm~
+    }
+
+    class Alarm {
+        - LocalTime time
+        - String label
+        - boolean active
+        - MathChallenge challenge
+        - SoundProfile soundProfile
+        + trigger() void
+        + isActive() boolean
+        + hasChallenge() boolean
+    }
+
+    class SoundProfile {
+        - String trackName
+        - int maxVolume
+        - boolean circadianMode
+        + play() void
+    }
+
+    <<interface>> MathChallenge
+    class MathChallenge {
+        + generateChallenge() String
+        + verifyAnswer(String ans) boolean
+    }
+
+    class BasicOperationChallenge {
+        - int result
+        + generateChallenge() String
+        + verifyAnswer(String ans) boolean
+    }
+
+    AlarmManager "1" o-- "0..*" Alarm : gestiona
+    Alarm "1" o-- "1" SoundProfile : contiene
+    Alarm "1" o-- "0..1" MathChallenge : requiere
+    MathChallenge <|.. BasicOperationChallenge : implementa
