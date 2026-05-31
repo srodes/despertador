@@ -67,3 +67,34 @@
 ### Reglas de Negocio
 * **RN-1 (Prioridad Absoluta):** El estado del Modo Vacaciones tiene prioridad máxima sobre cualquier regla de repetición semanal o configuración individual de las alarmas. Si está activo, el método `getActiveAlarms()` debe retornar obligatoriamente una lista vacía.
 * **RN-2 (Preservación de Estado):** Activar el modo vacaciones NO modifica el atributo `active` de las alarmas individuales. Solo actúa como un escudo o filtro temporal.
+
+## Caso de Uso: Activación de Alarma con Despertar Circadiano
+
+* **Nombre:** Ejecutar alarma con incremento de volumen progresivo.
+* **Objetivo:** Despertar al usuario de forma progresiva y no estresante, simulando un amanecer acústico mediante la elevación gradual del volumen del sonido.
+* **Actor principal:** Sistema (Disparador automático) / Usuario (Receptor).
+* **Precondiciones:** 1. La hora actual coincide con la hora programada de la alarma.
+  2. El Modo Vacaciones está desactivado.
+  3. La alarma tiene asociado un perfil de sonido (`SoundProfile`) con el `circadianMode` activado (`true`).
+
+### Flujo Principal (Camino Feliz)
+1. El sistema detecta que es la hora exacta de la alarma y la dispara (`trigger()`).
+2. El sistema comprueba que el perfil de sonido tiene activado el modo circadiano.
+3. El sistema inicia la reproducción del archivo de audio a un volumen inicial del 0%.
+4. El sistema incrementa el volumen de forma escalonada en intervalos fijos (tramos del 20%).
+5. El sistema repite el incremento de volumen de manera progresiva hasta alcanzar el volumen máximo configurado por el usuario (Ej: 70%).
+6. La alarma continúa sonando al volumen máximo establecido hasta que el usuario la posponga o la detenga.
+
+### Flujos Alternativos
+
+#### 2.a. El Perfil de Sonido NO tiene activado el modo circadiano
+* **2.a.1.** El sistema detecta que el `circadianMode` es falso (`false`).
+* **2.a.2.** El sistema dispara el sonido directamente al volumen máximo configurado por el usuario desde el primer segundo (Ej: 90% de golpe).
+* **2.a.3.** El flujo salta directamente al punto 6 del flujo principal.
+
+### Postcondiciones
+* El usuario es notificado de la alarma mediante un estímulo acústico que alcanza el nivel óptimo de forma escalonada, protegiendo su ciclo de sueño.
+
+### Reglas de Negocio
+* **RN-1 (Límite de Escala):** El incremento progresivo nunca debe superar el valor del volumen máximo fijado en el perfil de sonido (`maxVolume`). Si un incremento del 20% va a superar el máximo, el sistema debe ajustar el último tramo exactamente al valor máximo.
+* **RN-2 (No Bloqueante):** El bucle que aumenta el volumen de manera gradual no debe bloquear la capacidad del sistema para escuchar si el usuario pulsa los botones de posponer (snooze) o apagar.
