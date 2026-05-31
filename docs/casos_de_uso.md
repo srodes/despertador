@@ -38,3 +38,32 @@
 ### Reglas de Negocio
 * **RN-1 (Generación Aleatoria):** Los números del reto deben ser generados de forma pseudoaleatoria en cada intento y deben comprender valores de dos dígitos (entre 10 y 50) para garantizar una dificultad moderada que fuerce la actividad cerebral sin llegar a ser frustrante.
 * **RN-2 (Persistencia del Sonido):** Bajo ninguna circunstancia se detendrá el sonido o el hilo de la alarma hasta que la comprobación del paso 5 devuelva un valor afirmativo (`true`).
+
+## Caso de Uso: Activar / Desactivar Modo Vacaciones
+
+* **Nombre:** Gestionar el estado del Modo Vacaciones global.
+* **Objetivo:** Permitir al usuario congelar temporalmente la ejecución de todas las alarmas programadas en el sistema (por ejemplo, durante un periodo vacacional) con un solo interruptor, evitando tener que apagar o borrar cada alarma de forma individual.
+* **Actor principal:** Usuario.
+* **Precondiciones:** El sistema cuenta con al menos una alarma creada y configurada en estado activo.
+
+### Flujo Principal (Camino Feliz)
+1. El usuario solicita activar el "Modo Vacaciones" a través del sistema de control.
+2. El sistema cambia el estado del interruptor maestro global (`vacationModeActive`) a verdadero (`true`).
+3. El sistema emite un mensaje de confirmación por consola indicando que el modo ha sido activado.
+4. El sistema evalúa las próximas alarmas a sonar y filtra la lista para que devuelva cero (0) alarmas disponibles.
+5. Llega la hora programada de una alarma individual, pero el sistema la ignora por completo al verificar el estado global.
+
+### Flujos Alternativos
+
+#### 1.a. Desactivación del Modo Vacaciones (Vuelta a la rutina)
+* **1.a.1.** El usuario solicita apagar el "Modo Vacaciones".
+* **1.a.2.** El sistema cambia el estado del interruptor maestro global (`vacationModeActive`) a falso (`false`).
+* **1.a.3.** El sistema emite un mensaje confirmando que se ha desactivado el modo.
+* **1.a.4.** El sistema vuelve a evaluar las alarmas individuales y restablece el calendario habitual de despertadores basándose en el estado propio de cada una.
+
+### Postcondiciones
+* Mientras el Modo Vacaciones esté activo, ninguna alarma del sistema emitirá sonido, pero mantendrán intacta su configuración interna (etiqueta, hora y días de repetición) para cuando el modo se apague.
+
+### Reglas de Negocio
+* **RN-1 (Prioridad Absoluta):** El estado del Modo Vacaciones tiene prioridad máxima sobre cualquier regla de repetición semanal o configuración individual de las alarmas. Si está activo, el método `getActiveAlarms()` debe retornar obligatoriamente una lista vacía.
+* **RN-2 (Preservación de Estado):** Activar el modo vacaciones NO modifica el atributo `active` de las alarmas individuales. Solo actúa como un escudo o filtro temporal.
