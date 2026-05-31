@@ -47,7 +47,7 @@ despertador/
 ├── tests/
 │   └── .gitkeep                       # Carpeta reservada para pruebas unitarias
 └── README.md                          # Documentación principal del proyecto
-
+```
 ---
 
 ## Diseño de Software y Diagramas UML
