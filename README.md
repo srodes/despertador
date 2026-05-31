@@ -58,40 +58,42 @@ El diseño del software se ha desacoplado aplicando el **Principio de Inversión
 ```mermaid
 classDiagram
     class AlarmManager {
-        - List~Alarm~ alarms
-        - boolean vacationModeActive
-        + addAlarm(Alarm alarm) void
-        + setVacationMode(boolean active) void
-        + getActiveAlarms() List~Alarm~
+        -List~Alarm~ alarms
+        -boolean vacationModeActive
+        +addAlarm(Alarm alarm) void
+        +setVacationMode(boolean active) void
+        +getActiveAlarms() List~Alarm~
     }
 
     class Alarm {
-        - LocalTime time
-        - String label
-        - boolean active
-        - MathChallenge challenge
-        - SoundProfile soundProfile
-        + trigger() void
-        + isActive() boolean
-        + hasChallenge() boolean
+        -LocalTime time
+        -int hour
+        -int minute
+        -String label
+        -boolean active
+        -MathChallenge challenge
+        -SoundProfile soundProfile
+        +trigger() void
+        +isActive() boolean
+        +hasChallenge() boolean
     }
 
     class SoundProfile {
-        - String trackName
-        - int maxVolume
-        - boolean circadianMode
-        + play() void
+        -String trackName
+        -int maxVolume
+        -boolean circadianMode
+        +play() void
     }
 
     class MathChallenge {
-        + generateChallenge() String
-        + verifyAnswer(String ans) boolean
+        +generateChallenge() String
+        +verifyAnswer(String ans) boolean
     }
 
     class BasicOperationChallenge {
-        - int result
-        + generateChallenge() String
-        + verifyAnswer(String ans) boolean
+        -int result
+        +generateChallenge() String
+        +verifyAnswer(String ans) boolean
     }
 
     AlarmManager "1" o-- "0..*" Alarm : gestiona
